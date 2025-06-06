@@ -12,7 +12,7 @@ async function checkVersionUpdate() {
   try {
     const res = await fetch(VERSION_URL);
     const data = await res.json();
-    const latestVersion = data.version || data["версія"];
+    const latestVersion = data.version || data["version"];
 
     versionValue.textContent = CURRENT_VERSION;
 
