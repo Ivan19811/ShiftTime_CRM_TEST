@@ -33,7 +33,7 @@ refreshBtn.addEventListener("click", () => {
 });
 
   try {
-    const response = await fetch("https://shifttimecrm-test-backend-v2.onrender.com/write", {
+    const response = await fetch("https://shifttime-crm-test.onrender.com/write", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value: Number(value) })
@@ -60,7 +60,7 @@ document.getElementById("refreshBtn").addEventListener("click", () => {
 
 async function getLastValue() {
   try {
-    const res = await fetch("https://shifttimecrm-test-backend-v2.onrender.com/last");
+    const res = await fetch("https://shifttime-crm-test.onrender.com/last");
     const data = await res.json();
 
     if (data.value !== undefined) {
