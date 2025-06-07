@@ -6,8 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz.../exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRdjsoZ6uT6S2nioFn_7s6A1SCLt7GQsj5ib5enKwkzd5tDEp_AroxmXLLec5BDuW1/exec";
 
+// Запис числа
 app.post("/write", async (req, res) => {
   try {
     const response = await fetch(SCRIPT_URL, {
@@ -22,6 +23,7 @@ app.post("/write", async (req, res) => {
   }
 });
 
+// Отримання останнього значення
 app.get("/last", async (req, res) => {
   try {
     const response = await fetch(SCRIPT_URL);
