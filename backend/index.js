@@ -3,13 +3,11 @@ const cors = require("cors");
 const fetch = require("node-fetch");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json());
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRdjsoZ6uT6S2nioFn_7s6A1SCLt7GQsj5ib5enKwkzd5tDEp_AroxmXLLec5BDuW1/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz.../exec";
 
-// запис
 app.post("/write", async (req, res) => {
   try {
     const response = await fetch(SCRIPT_URL, {
@@ -20,23 +18,21 @@ app.post("/write", async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    console.log("❌ ПОМИЛКА /write:", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "❌ Помилка запису: " + err.message });
   }
 });
 
-// вивід
 app.get("/last", async (req, res) => {
   try {
     const response = await fetch(SCRIPT_URL);
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    console.log("❌ ПОМИЛКА /last:", err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "❌ Помилка отримання: " + err.message });
   }
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Backend listening on port ${PORT}`);
 });
