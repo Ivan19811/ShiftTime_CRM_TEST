@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRdjsoZ6uT6S2nioFn_7s6A1SCLt7GQsj5ib5enKwkzd5tDEp_AroxmXLLec5BDuW1/exec";
-
+                 
 // Статус кореневого роуту (для перевірки)
 app.get("/", (req, res) => {
   res.send("✅ ShiftTime Backend працює");
