@@ -61,4 +61,36 @@ router.get("/cities", async (req, res) => {
   }
 });
 
+
+// ✅ 3. Отримання відділень по місту (cityRef)
+router.get("/warehouses", async (req, res) => {
+  const cityRef = req.query.cityRef;
+
+  if (!cityRef) {
+    return res.status(400).json({ error: "cityRef обовʼязковий" });
+  }
+
+  try {
+    const response = await fetch(NP_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        apiKey: NP_API_KEY,
+        modelName: "Address",
+        calledMethod: "getWarehouses",
+        methodProperties: {
+          CityRef: cityRef
+        }
+      })
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("❌ /warehouses: помилка при запиті до НП:", error);
+    res.status(500).json({ error: "Помилка при отриманні відділень" });
+  }
+});
+
+
 export default router;
