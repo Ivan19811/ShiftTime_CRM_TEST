@@ -7,7 +7,10 @@ const app = express();
 
 // ✅ CORS-конфігурація для твого сайту на Netlify
 const corsOptions = {
-  origin: "https://shifttime-crm-test.netlify.app",
+  origin: [
+    "https://shifttime-crm-test.netlify.app", // Netlify
+    "http://127.0.0.1:5500"                   // Live Server
+  ],
   methods: "GET,POST",
   allowedHeaders: ["Content-Type"]
 };
