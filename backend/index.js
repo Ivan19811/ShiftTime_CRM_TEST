@@ -6,27 +6,28 @@ import fetch from 'node-fetch';
 const app = express();
 
 // --- CORS allowlist: додай/зміни свої домени тут
-const ALLOWLIST = [
-  'https://shifttime.com.ua',                 // прод (якщо треба)
-  'https://crm.shifttime.com.ua',             // прод CRM (якщо є)
-  'https://shifttime-crm-test.netlify.app',   // ваш тестовий Netlify
-  'http://localhost:5173',                    // локалка (vite)
-  'http://localhost:3000'                     // локалка (інше)
-];
+// --- CORS: дозволяємо лише відомі origin'и і віддзеркалюємо їх у ACAO
+const ALLOWLIST = new Set([
+  'https://shifttime-crm-test.netlify.app',
+  'https://shifttime.com.ua',
+  'https://crm.shifttime.com.ua',
+  'http://localhost:5173',
+  'http://localhost:3000'
+]);
 
-// Гнучка перевірка origin + підтримка OPTIONS
-app.use(cors({
-  origin(origin, cb) {
-    // дозволяємо запити без Origin (наприклад, curl/healthchecks)
-    if (!origin) return cb(null, true);
-    cb(null, ALLOWLIST.includes(origin));
-  },
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  maxAge: 86400, // щоб браузер кешував preflight
-}));
-app.options('*', cors());
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWLIST.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    if (req.method === 'OPTIONS') return res.sendStatus(204);
+  }
+  next();
+});
 
 // JSON body
 app.use(express.json({ limit: '1mb' }));
